@@ -1,7 +1,7 @@
 author: Volodymyr Sharaienko <grandamx@gmail.com>
 description: homie device emulation
 type: lib
-version: 1.0
+version: 2.17.0
 
 config_schema:
   - ["homie", "o", {title: "homie settings"}]
@@ -21,4 +21,3 @@ libs:
   - origin: https://github.com/mongoose-os-libs/mjs
   - origin: https://github.com/mongoose-os-libs/core
   - origin: https://github.com/mongoose-os-libs/mqtt
-  
