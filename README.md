@@ -1,6 +1,18 @@
 # Mongoose OS Homie implementation
 
-JavaScript API for Homie support
+Provides JavaScript API support for [Homie 3.0.0](https://homieiot.github.io/specification/spec-core-v3_0_0/)
+
+Implemented with Mongoose OS MQTT library
+
+Homie device name defined as "device.id" from `mos.yml`
+
+Supported 4 types of devices:
+
+- HomieDevice.TYPE_INTEGER - for ex. volume level (read only)
+- HomieDevice.TYPE_FLOAT   - for ex. temperature (read only)
+- HomieDevice.TYPE_SWITCH  - for ex. relay (read/write)
+- HomieDevice.TYPE_INPUT   - for ex. button (read only)
+
 
 ## Code example
 

@@ -1,5 +1,5 @@
 description: homie device emulation
-author: Volodymyr "N0dGrand87" Sharaienko <grandamx@gmail.com>
+author: Volodymyr Sharaienko <grandamx@gmail.com>
 type: lib
 manifest_version: 2019-04-26
 libs_version: ${mos.version}
