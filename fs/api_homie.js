@@ -16,11 +16,16 @@
  */
 
 load('api_config.js');
-load('api_mqtt.js');
 load('api_log.js');
+load('api_mqtt.js');
 load('api_timer.js');
 
 let HomieDevice = {
+
+    TYPE_INTEGER: 0,    // for ex. volume level (read only)
+    TYPE_FLOAT: 1,      // for ex. temperature (read only)
+    TYPE_SWITCH: 2,     // for ex. relay (read/write)
+    TYPE_INPUT: 3,      // for ex. button (read only)
 
     _nodeCount: 0,
     _nodes: [],
@@ -43,15 +48,17 @@ let HomieDevice = {
 
     addNode: function (nodeName, nodeType, getStateCallback) {
         // TODO: implement as function pointer table
-        if (nodeType === 'integer') {
-            return this.addNodeNumber(nodeName, getStateCallback);
-        } else if (nodeType === 'float') {
+        if (nodeType === this.TYPE_INTEGER) {
+            return this.addNodeInteger(nodeName, getStateCallback);
+        } else if (nodeType === this.TYPE_FLOAT) {
             return this.addNodeFloat(nodeName, getStateCallback);
-        } else if (nodeType === 'switch') {
+        } else if (nodeType === this.TYPE_SWITCH) {
             return this.addNodeSwitch(nodeName, getStateCallback);
+        } else if (nodeType === this.TYPE_INPUT) {
+            return this.addNodeInput(nodeName, getStateCallback);
         }
 
-        Log.error("Node type is unsupport - " + nodeType);
+        Log.error("Node type is unsupported - " + JSON.stringify(nodeType));
         return null;
     },
 
@@ -99,6 +106,19 @@ let HomieDevice = {
         return switchInfo;
     },
 
+    addNodeInput: function (nodeName, getStateCallback) {
+        let inputInfo = {
+            name: nodeName,
+            isSetable: 'false',
+            payload: 'boolean',
+            type: 'switch',
+            getState: getStateCallback
+        };
+        this.insertNodeInfo(inputInfo);
+
+        return inputInfo;
+    },
+
     getNodeNames: function () {
         let result = 'system';
         for (let i = 0; i < this._nodeCount; i++) {
@@ -133,9 +153,10 @@ let HomieDevice = {
         this.sendMQTT(nodeTopic + '/$properties', this._nodeStateTopicName);
 
         let nodeStateTopic = nodeTopic + '/' + this._nodeStateTopicName;
+        Log.info('Homie send info for ' + nodeStateTopic);
+
         // TODO: fix the default value
         this.sendMQTT(nodeStateTopic, '0');
-
 
         this.sendMQTT(nodeStateTopic + '/$name', nodeInfo.name);
         this.sendMQTT(nodeStateTopic + '/$settable', nodeInfo.isSetable);
@@ -149,7 +170,7 @@ let HomieDevice = {
     },
 
     sendIntro: function () {
-        Log.debug('sendIntro() start');
+        Log.info('Homie sendIntro() start');
         this.sendMQTT('/$state', 'init');
         this.sendMQTT('/$homie', '3.0');
         this.sendMQTT('/$name', Cfg.get('device.id'));
@@ -169,14 +190,13 @@ let HomieDevice = {
         this.sendMQTT('/system/uptime/$datatype', 'float');
 
         for (let i = 0; i < this._nodeCount; i++) {
-            Log.debug('SendNodeInfo for ' + this._nodes[i].name);
             this.sendNodeInfo(this._nodes[i]);
         }
 
         this.updateStatus(Sys.uptime());
 
         this.sendMQTT('/$state', 'ready');
-        Log.debug('sendIntro() done');
+        Log.info('Homie sendIntro() done');
     },
 
     sendMQTT: function (subTopic, msg) {
@@ -194,7 +214,7 @@ let HomieDevice = {
         } else if (this.stateUpdateListener !== null) {
             propertyNewValue = JSON.stringify((this.stateUpdateListener(nodeInfo)));
         } else {
-            Log.debug('State update listener is not defined for node ' + nodeInfo.name);
+            Log.warn('State update listener is not defined for node ' + nodeInfo.name);
         }
 
         if (propertyNewValue !== null) {

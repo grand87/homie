@@ -16,6 +16,16 @@ filesystem:
 tags:
   - js
 
+config_schema:
+
+  - ["homie", "o", {title: "homie settings"}]
+  - ["homie.updateInterval", "i", 10, {title: "homie update interval in sec"}]
+  - ["homie.devices", "i", 0, {title: "homie device nodes count"}]
+  - ["homie.node0.name", "i", 2, {title: "homie node0 name to be visible in OpenHAB"}]
+  - ["homie.node0.type", "i", 3, {title: "homie node0 type to be visible in OpenHAB"}]
+  - ["homie.node1.name", "i", 2, {title: "homie node1 name to be visible in OpenHAB"}]
+  - ["homie.node1.type", "i", 3, {title: "homie node1 type to be visible in OpenHAB"}]
+
 libs:
   - origin: https://github.com/mongoose-os-libs/boards
   - origin: https://github.com/mongoose-os-libs/mjs
