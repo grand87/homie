@@ -1,23 +1,9 @@
-description: homie device emulation
 author: Volodymyr Sharaienko <grandamx@gmail.com>
+description: homie device emulation
 type: lib
-manifest_version: 2019-04-26
-libs_version: ${mos.version}
-modules_version: ${mos.version}
-mongoose_os_version: ${mos.version}
 version: 1.0
 
-tags:
-  - js
-
-filesystem:
-  - fs
-
-tags:
-  - js
-
 config_schema:
-
   - ["homie", "o", {title: "homie settings"}]
   - ["homie.updateInterval", "i", 10, {title: "homie update interval in seconds"}]
   - ["homie.devices", "i", 0, {title: "homie device nodes count"}]
@@ -26,20 +12,13 @@ config_schema:
   - ["homie.node1.name", "i", 2, {title: "homie node1 name to be visible in OpenHAB"}]
   - ["homie.node1.type", "i", 3, {title: "homie node1 type to be visible in OpenHAB"}]
 
+tags:
+  - js
+
+manifest_version: 2019-04-26
+
 libs:
-  - origin: https://github.com/mongoose-os-libs/boards
   - origin: https://github.com/mongoose-os-libs/mjs
-  - origin: https://github.com/mongoose-os-libs/ca-bundle
   - origin: https://github.com/mongoose-os-libs/core
-  - origin: https://github.com/mongoose-os-libs/fstab
-  - origin: https://github.com/mongoose-os-libs/http-server
-  - origin: https://github.com/mongoose-os-libs/provision
-  - origin: https://github.com/mongoose-os-libs/rpc-service-config
-  - origin: https://github.com/mongoose-os-libs/rpc-service-fs
-  - origin: https://github.com/mongoose-os-libs/rpc-loopback
-  - origin: https://github.com/mongoose-os-libs/rpc-mqtt
-  - origin: https://github.com/mongoose-os-libs/rpc-service-wifi
-  - origin: https://github.com/mongoose-os-libs/rpc-uart
-  - origin: https://github.com/mongoose-os-libs/rpc-ws
-  - origin: https://github.com/mongoose-os-libs/dns-sd
-  - origin: https://github.com/mongoose-os-libs/wifi
+  - origin: https://github.com/mongoose-os-libs/mqtt
+  
