@@ -13,13 +13,20 @@ Supported 4 types of devices:
 - HomieDevice.TYPE_SWITCH  - for ex. relay (read/write)
 - HomieDevice.TYPE_INPUT   - for ex. button (read only)
 
+## How to use this library
 
-## Code example
+In your Mongoose OS app, edit `mos.yml` file and add a reference to this
+library.
+
+### Code example
 
 Bellow code demonstrates registration single device of boolean type (read only)
 
 ```
-// Device state
+load('api_homie.js');
+
+...
+
 let globalState = {
     // Boolean value to be used as Homie device status
     inputStatus: false,
